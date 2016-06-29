@@ -1,0 +1,26 @@
+<nav *ngIf="isLoggedIn()" class="navbar navbar-default navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header" dropdown>
+			<button type="button" class="navbar-toggle collapsed" dropdownToggle>
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand"><img src="images/logo-libredeuda-chico.png" height="30"></a>
+		</div>
+
+		<div class="collapse navbar-collapse" aria-expanded="false">
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown open" dropdown>
+					<a class="dropdown-toggle" dropdownToggle role="button" aria-expanded="true"><span dropdownToggle class="glyphicon glyphicon-user"></span> Lalalaal! <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<router-outlet></router-outlet>
