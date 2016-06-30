@@ -1,12 +1,17 @@
 /**
  * Created by kolesnikov-a on 22/06/2016.
  */
-import { Component }       from '@angular/core';
-import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router-deprecated';
+import { Component, OnInit } from '@angular/core';
+import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Router } from '@angular/router-deprecated';
 import { DROPDOWN_DIRECTIVES } from 'ng2-bootstrap/ng2-bootstrap';
 
-import { LoginComponent } from './login.component';
-import { LoginService } from './login.service';
+import { LoginComponent } from './login/login.component';
+import { LoginService } from './login/login.service';
+
+import { LibreDeudaComponent } from './libreDeuda/libreDeuda.component';
+
+// Add the RxJS Observable operators we need in this app.
+import './rxjs-operators';
 
 @RouteConfig([
     {
@@ -14,6 +19,11 @@ import { LoginService } from './login.service';
         name: 'Login',
         component: LoginComponent,
         useAsDefault: true
+    },
+    {
+        path: '/libreDeuda',
+        name: 'LibreDeuda',
+        component: LibreDeudaComponent
     }
 ])
 
@@ -27,11 +37,22 @@ import { LoginService } from './login.service';
     ]
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit{
     constructor(
+        private router: Router,
         private loginService: LoginService
     ){};
+
+    ngOnInit(){
+        if (!this.isLoggedIn()) this.router.navigate(['Login']);
+    }
+
     isLoggedIn(){
         return this.loginService.isLoggedIn();
+    }
+
+    logout(){
+        this.loginService.logout();
+        this.router.navigate(['Login']);
     }
 }

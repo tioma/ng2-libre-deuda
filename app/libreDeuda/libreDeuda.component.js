@@ -9,29 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /**
- * Created by Artiom on 28/06/2016.
+ * Created by Artiom on 29/06/2016.
  */
 var core_1 = require('@angular/core');
-var LoginService = (function () {
-    function LoginService() {
-        this.loggedIn = false;
+var LibreDeudaComponent = (function () {
+    function LibreDeudaComponent() {
     }
-    LoginService.prototype.isLoggedIn = function () {
-        return this.loggedIn;
+    LibreDeudaComponent.prototype.ngOnInit = function () {
     };
-    LoginService.prototype.login = function (user) {
-        console.log(user);
-        var mockResponse = {
-            status: 'OK',
-            user: user
-        };
-        return Promise.resolve(mockResponse);
-    };
-    LoginService = __decorate([
-        core_1.Injectable(), 
+    ;
+    LibreDeudaComponent = __decorate([
+        core_1.Component({
+            selector: 'libreDeuda',
+            templateUrl: 'app/libreDeuda/libreDeuda.component.html'
+        }), 
         __metadata('design:paramtypes', [])
-    ], LoginService);
-    return LoginService;
+    ], LibreDeudaComponent);
+    return LibreDeudaComponent;
 }());
-exports.LoginService = LoginService;
-//# sourceMappingURL=login.service.js.map
+exports.LibreDeudaComponent = LibreDeudaComponent;
+//# sourceMappingURL=libreDeuda.component.js.map

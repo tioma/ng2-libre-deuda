@@ -14,15 +14,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_deprecated_1 = require('@angular/router-deprecated');
 var ng2_bootstrap_1 = require('ng2-bootstrap/ng2-bootstrap');
-var login_component_1 = require('./login.component');
-var login_service_1 = require('./login.service');
+var login_component_1 = require('./login/login.component');
+var login_service_1 = require('./login/login.service');
+var libreDeuda_component_1 = require('./libreDeuda/libreDeuda.component');
+// Add the RxJS Observable operators we need in this app.
+require('./rxjs-operators');
 var AppComponent = (function () {
-    function AppComponent(loginService) {
+    function AppComponent(router, loginService) {
+        this.router = router;
         this.loginService = loginService;
     }
     ;
+    AppComponent.prototype.ngOnInit = function () {
+        if (!this.isLoggedIn())
+            this.router.navigate(['Login']);
+    };
     AppComponent.prototype.isLoggedIn = function () {
         return this.loginService.isLoggedIn();
+    };
+    AppComponent.prototype.logout = function () {
+        this.loginService.logout();
+        this.router.navigate(['Login']);
     };
     AppComponent = __decorate([
         router_deprecated_1.RouteConfig([
@@ -31,6 +43,11 @@ var AppComponent = (function () {
                 name: 'Login',
                 component: login_component_1.LoginComponent,
                 useAsDefault: true
+            },
+            {
+                path: '/libreDeuda',
+                name: 'LibreDeuda',
+                component: libreDeuda_component_1.LibreDeudaComponent
             }
         ]),
         core_1.Component({
@@ -42,7 +59,7 @@ var AppComponent = (function () {
                 login_service_1.LoginService
             ]
         }), 
-        __metadata('design:paramtypes', [login_service_1.LoginService])
+        __metadata('design:paramtypes', [router_deprecated_1.Router, login_service_1.LoginService])
     ], AppComponent);
     return AppComponent;
 }());

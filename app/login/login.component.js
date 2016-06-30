@@ -12,10 +12,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by Artiom on 23/06/2016.
  */
 var core_1 = require('@angular/core');
+var router_deprecated_1 = require('@angular/router-deprecated');
 var login_service_1 = require('./login.service');
 //import {LocalStorage, SessionStorage} from "angular2-localstorage/WebStorage";
 var LoginComponent = (function () {
-    function LoginComponent(loginService) {
+    function LoginComponent(router, loginService) {
+        this.router = router;
         this.loginService = loginService;
         this.model = {
             username: '',
@@ -25,19 +27,23 @@ var LoginComponent = (function () {
         this.rememberMe = false;
     }
     ;
+    LoginComponent.prototype.ngOnInit = function () {
+        if (this.loginService.isLoggedIn())
+            this.router.navigate(['LibreDeuda']);
+    };
+    ;
     LoginComponent.prototype.login = function () {
         console.log(this.model);
         this.loginService.login(this.model)
-            .then(function (data) { return console.log(data); });
+            .subscribe(function (loggedUser) { return console.log(loggedUser); }, function (error) { return console.log(error); });
     };
     LoginComponent = __decorate([
         core_1.Component({
             selector: 'login',
-            templateUrl: 'app/login.component.html',
-            styleUrls: ['app/login.styles.css'],
-            encapsulation: core_1.ViewEncapsulation.None
+            templateUrl: 'app/login/login.component.html',
+            styleUrls: ['app/login/login.styles.css']
         }), 
-        __metadata('design:paramtypes', [login_service_1.LoginService])
+        __metadata('design:paramtypes', [router_deprecated_1.Router, login_service_1.LoginService])
     ], LoginComponent);
     return LoginComponent;
 }());
