@@ -13,6 +13,7 @@ var appPromise = platform_browser_dynamic_1.bootstrap(app_component_1.AppCompone
     forms_1.disableDeprecatedForms(),
     forms_1.provideForms(),
     core_1.provide('ApiEndpoint', { useValue: 'https://10.10.0.223:8086' }),
+    //provide('ApiEndpoint', { useValue: 'http://www.puertobuenosaires.gob.ar:8090'}),
     http_1.HTTP_PROVIDERS,
     LocalStorageEmitter_1.LocalStorageService
 ]).catch(function (err) { return console.error(err); });

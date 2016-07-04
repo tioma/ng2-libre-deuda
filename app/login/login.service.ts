@@ -15,10 +15,21 @@ export class LoginService {
         @Inject('ApiEndpoint') private apiEndpoint: string
     ){}
 
-    @LocalStorage() private token:string = '';
+    private token:string = '';
+    @LocalStorage() private loggedUser:string = '';
+    @LocalStorage() public userName:string = '';
 
     isLoggedIn(){
-        return this.token != '';
+        return this.loggedUser != '' || this.token != '';
+    }
+
+    rememberUser(user){
+        this.loggedUser = user;
+    }
+
+    loginSuccess(token, userName){
+        this.token = token;
+        this.userName = userName;
     }
 
     login(user) {
@@ -33,7 +44,6 @@ export class LoginService {
     }
 
     private extractData(res: Response) {
-        console.log(res);
         let body = res.json();
         return body.data || { };
     }
@@ -41,6 +51,7 @@ export class LoginService {
     private handleError (error: any) {
         // In a real world app, we might use a remote logging infrastructure
         // We'd also dig deeper into the error to get a better message
+        console.log(error);
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         console.error(errMsg); // log to console instead
@@ -49,5 +60,7 @@ export class LoginService {
 
     logout(){
         this.token = '';
+        this.loggedUser = '';
+        this.userName = '';
     }
 }

@@ -6,7 +6,7 @@ import { NgForm } from '@angular/common';
 import { Router } from '@angular/router-deprecated';
 
 import { LoginService } from './login.service';
-//import {LocalStorage, SessionStorage} from "angular2-localstorage/WebStorage";
+import {LocalStorage, SessionStorage} from "angular2-localstorage/WebStorage";
 
 @Component({
     selector: 'login',
@@ -25,8 +25,9 @@ export class LoginComponent implements OnInit {
     };
 
     public model = {
-        username: '',
-        password: ''
+        USUARIO: '', //dreyes@puertobuenosaires.gob.ar
+        CLAVE: '', //123456
+        session: false
     };
 
     //here happens the magic. `rememberMe` is always restored from the localstorage when you reload the site
@@ -36,7 +37,11 @@ export class LoginComponent implements OnInit {
         console.log(this.model);
         this.loginService.login(this.model)
             .subscribe(
-                loggedUser => console.log(loggedUser),
+                loggedUser => {
+                    if (this.model.session) this.loginService.rememberUser(loggedUser);
+                    this.loginService.loginSuccess(loggedUser, this.model.USUARIO);
+                    this.router.navigate(['LibreDeuda'])
+                },
                 error => console.log(error));
     }
 

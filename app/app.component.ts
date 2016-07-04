@@ -10,6 +10,7 @@ import { LoginService } from './login/login.service';
 
 import { LibreDeudaComponent } from './libreDeuda/libreDeuda.component';
 
+import {LocalStorage, SessionStorage} from "angular2-localstorage/WebStorage";
 // Add the RxJS Observable operators we need in this app.
 import './rxjs-operators';
 
@@ -42,6 +43,10 @@ export class AppComponent implements OnInit{
         private router: Router,
         private loginService: LoginService
     ){};
+
+    getUserName(){
+        return this.loginService.userName;
+    }
 
     ngOnInit(){
         if (!this.isLoggedIn()) this.router.navigate(['Login']);

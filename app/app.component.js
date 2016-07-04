@@ -25,6 +25,9 @@ var AppComponent = (function () {
         this.loginService = loginService;
     }
     ;
+    AppComponent.prototype.getUserName = function () {
+        return this.loginService.userName;
+    };
     AppComponent.prototype.ngOnInit = function () {
         if (!this.isLoggedIn())
             this.router.navigate(['Login']);

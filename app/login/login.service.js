@@ -23,9 +23,18 @@ var LoginService = (function () {
         this.http = http;
         this.apiEndpoint = apiEndpoint;
         this.token = '';
+        this.loggedUser = '';
+        this.userName = '';
     }
     LoginService.prototype.isLoggedIn = function () {
-        return this.token != '';
+        return this.loggedUser != '' || this.token != '';
+    };
+    LoginService.prototype.rememberUser = function (user) {
+        this.loggedUser = user;
+    };
+    LoginService.prototype.loginSuccess = function (token, userName) {
+        this.token = token;
+        this.userName = userName;
     };
     LoginService.prototype.login = function (user) {
         var loginUrl = this.apiEndpoint + '/login';
@@ -36,13 +45,13 @@ var LoginService = (function () {
             .catch(this.handleError);
     };
     LoginService.prototype.extractData = function (res) {
-        console.log(res);
         var body = res.json();
         return body.data || {};
     };
     LoginService.prototype.handleError = function (error) {
         // In a real world app, we might use a remote logging infrastructure
         // We'd also dig deeper into the error to get a better message
+        console.log(error);
         var errMsg = (error.message) ? error.message :
             error.status ? error.status + " - " + error.statusText : 'Server error';
         console.error(errMsg); // log to console instead
@@ -50,11 +59,17 @@ var LoginService = (function () {
     };
     LoginService.prototype.logout = function () {
         this.token = '';
+        this.loggedUser = '';
+        this.userName = '';
     };
     __decorate([
         WebStorage_1.LocalStorage(), 
         __metadata('design:type', String)
-    ], LoginService.prototype, "token", void 0);
+    ], LoginService.prototype, "loggedUser", void 0);
+    __decorate([
+        WebStorage_1.LocalStorage(), 
+        __metadata('design:type', String)
+    ], LoginService.prototype, "userName", void 0);
     LoginService = __decorate([
         core_1.Injectable(),
         __param(1, core_1.Inject('ApiEndpoint')), 

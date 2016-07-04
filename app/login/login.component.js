@@ -14,14 +14,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_deprecated_1 = require('@angular/router-deprecated');
 var login_service_1 = require('./login.service');
-//import {LocalStorage, SessionStorage} from "angular2-localstorage/WebStorage";
 var LoginComponent = (function () {
     function LoginComponent(router, loginService) {
         this.router = router;
         this.loginService = loginService;
         this.model = {
-            username: '',
-            password: ''
+            USUARIO: '',
+            CLAVE: '',
+            session: false
         };
         //here happens the magic. `rememberMe` is always restored from the localstorage when you reload the site
         this.rememberMe = false;
@@ -33,9 +33,15 @@ var LoginComponent = (function () {
     };
     ;
     LoginComponent.prototype.login = function () {
+        var _this = this;
         console.log(this.model);
         this.loginService.login(this.model)
-            .subscribe(function (loggedUser) { return console.log(loggedUser); }, function (error) { return console.log(error); });
+            .subscribe(function (loggedUser) {
+            if (_this.model.session)
+                _this.loginService.rememberUser(loggedUser);
+            _this.loginService.loginSuccess(loggedUser, _this.model.USUARIO);
+            _this.router.navigate(['LibreDeuda']);
+        }, function (error) { return console.log(error); });
     };
     LoginComponent = __decorate([
         core_1.Component({

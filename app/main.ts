@@ -15,6 +15,7 @@ var appPromise = bootstrap(AppComponent, [
     disableDeprecatedForms(),
     provideForms(),
     provide('ApiEndpoint', { useValue: 'https://10.10.0.223:8086'}),
+    //provide('ApiEndpoint', { useValue: 'http://www.puertobuenosaires.gob.ar:8090'}),
     HTTP_PROVIDERS,
     LocalStorageService
 ]).catch((err: any) => console.error(err));
