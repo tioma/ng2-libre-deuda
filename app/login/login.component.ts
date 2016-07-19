@@ -3,10 +3,10 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/common';
-import { Router } from '@angular/router-deprecated';
+import { Router } from '@angular/router';
 
 import { LoginService } from './login.service';
-import {LocalStorage, SessionStorage} from "angular2-localstorage/WebStorage";
+import { LocalStorage } from "angular2-localstorage/WebStorage";
 
 @Component({
     selector: 'login',
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
     ){};
 
     ngOnInit(){
-        if (this.loginService.isLoggedIn()) this.router.navigate(['LibreDeuda']);
+        if (this.loginService.isLoggedIn()) this.router.navigate(['/libre-deuda']);
     };
 
     public model = {
@@ -38,9 +38,8 @@ export class LoginComponent implements OnInit {
         this.loginService.login(this.model)
             .subscribe(
                 loggedUser => {
-                    if (this.model.session) this.loginService.rememberUser(loggedUser);
-                    this.loginService.loginSuccess(loggedUser, this.model.USUARIO);
-                    this.router.navigate(['LibreDeuda'])
+                    this.loginService.loginSuccess(loggedUser, this.model.USUARIO, this.model.session);
+                    //this.router.navigate(['/libre-deuda'])
                 },
                 error => console.log(error));
     }

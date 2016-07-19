@@ -5,7 +5,7 @@
 	</div>
 
 	<div class="row col-lg-12">
-		<button class="btn btn-default pull-right">Informar contenedor</button>
+		<button class="btn btn-default pull-right" [routerLink]="['/libre-deuda/new-container']">Informar contenedor</button>
 	</div>
 
 	<div class="row table-responsive col-lg-12">
@@ -27,24 +27,51 @@
 				<th></th>
 			</tr>
 			</thead>
-			<tbody>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+			<tbody *ngFor="let container of containers">
+			<tr (click)="showDetail(container)" class="parent-row">
+				<td>{{ container.TERMINAL }}</td>
+				<td>{{ container.SHIP }}</td>
+				<td>{{ container.TRIP }}</td>
+				<td>{{ container.CONTAINER }}</td>
+				<td>{{ container.BL }}</td>
+				<td>{{ container.RETURN_TO[0].DATE_TO | date:"dd/MM/yy" }}</td>
+				<td>{{ container.RETURN_TO[0].PLACE }}</td>
+				<td>{{ container.CLIENT[0].COMPANY }}</td>
+				<td>{{ container.CLIENT[0].CUIT }}</td>
+				<td class="{{ container.STATUS[0].STATUS | containerStatus:'className' }}" >{{ container.STATUS[0].STATUS | containerStatus:'name' }}</td>
+				<td>{{ container.STATUS[0].AUD_TIME | date:"dd/MM/yy HH:mm" }}</td>
+				<td>{{ container.STATUS[0].AUD_USER }}</td>
 				<td></td>
 			</tr>
+			<template [ngIf]="container.SHOW">
+				<tr *ngFor="let detail of container.RETURN_TO" class="child-row">
+			    <td colspan="5" class="text-right text-bold"><span class="glyphicon glyphicon-edit"></span> Lugar y fecha de devolución</td>
+			    <td>{{ detail.DATE_TO | date: 'dd/MM/yyyy' }}</td>
+			    <td>{{ detail.PLACE }}</td>
+			    <td></td>
+			    <td></td>
+			    <td></td>
+			    <td>{{ detail.AUD_TIME | date: 'dd/MM/yyyy HH:mm' }}</td>
+			    <td>{{ detail.AUD_USER }}</td>
+				</tr>
+				<tr *ngFor="let detail of container.CLIENT" class="child-row">
+			    <td colspan="7" class="text-right text-bold"><span class="glyphicon glyphicon-edit"></span> Cliente</td>
+			    <td>{{ detail.COMPANY }}</td>
+			    <td>{{ detail.CUIT }}</td>
+			    <td></td>
+			    <td>{{ detail.AUD_TIME | date: 'dd/MM/yyyy HH:mm' }}</td>
+			    <td>{{ detail.AUD_USER }}</td>
+				</tr>
+				<tr *ngFor="let detail of container.STATUS" class="child-row">
+			    <td colspan="9" class="text-right text-bold"><span class="glyphicon glyphicon-edit"></span> Estado del contenedor</td>
+			    <td class="{{ detail.STATUS | containerStatus:'className' }}">{{ detail.STATUS | containerStatus:'name' }}</td>
+			    <td>{{ detail.AUD_TIME | date: 'dd/MM/yyyy HH:mm' }}</td>
+			    <td>{{ detail.AUD_USER }}</td>
+				</tr>
+			</template>
 			</tbody>
 		</table>
 	</div>
 
+	<router-outlet></router-outlet>
 </div>

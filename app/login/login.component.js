@@ -12,7 +12,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by Artiom on 23/06/2016.
  */
 var core_1 = require('@angular/core');
-var router_deprecated_1 = require('@angular/router-deprecated');
+var router_1 = require('@angular/router');
 var login_service_1 = require('./login.service');
 var LoginComponent = (function () {
     function LoginComponent(router, loginService) {
@@ -29,7 +29,7 @@ var LoginComponent = (function () {
     ;
     LoginComponent.prototype.ngOnInit = function () {
         if (this.loginService.isLoggedIn())
-            this.router.navigate(['LibreDeuda']);
+            this.router.navigate(['/libre-deuda']);
     };
     ;
     LoginComponent.prototype.login = function () {
@@ -37,10 +37,8 @@ var LoginComponent = (function () {
         console.log(this.model);
         this.loginService.login(this.model)
             .subscribe(function (loggedUser) {
-            if (_this.model.session)
-                _this.loginService.rememberUser(loggedUser);
-            _this.loginService.loginSuccess(loggedUser, _this.model.USUARIO);
-            _this.router.navigate(['LibreDeuda']);
+            _this.loginService.loginSuccess(loggedUser, _this.model.USUARIO, _this.model.session);
+            //this.router.navigate(['/libre-deuda'])
         }, function (error) { return console.log(error); });
     };
     LoginComponent = __decorate([
@@ -49,7 +47,7 @@ var LoginComponent = (function () {
             templateUrl: 'app/login/login.component.html',
             styleUrls: ['app/login/login.styles.css']
         }), 
-        __metadata('design:paramtypes', [router_deprecated_1.Router, login_service_1.LoginService])
+        __metadata('design:paramtypes', [router_1.Router, login_service_1.LoginService])
     ], LoginComponent);
     return LoginComponent;
 }());

@@ -15,65 +15,44 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
  * Created by Artiom on 28/06/2016.
  */
 var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
+var extHttp_1 = require('../extHttp');
+var router_1 = require('@angular/router');
+var identity_service_1 = require('./identity.service');
 var WebStorage_1 = require("../../node_modules/angular2-localstorage/WebStorage");
-var Observable_1 = require('rxjs/Observable');
 var LoginService = (function () {
-    function LoginService(http, apiEndpoint) {
+    function LoginService(router, http, identityService, apiEndpoint) {
+        this.router = router;
         this.http = http;
+        this.identityService = identityService;
         this.apiEndpoint = apiEndpoint;
-        this.token = '';
-        this.loggedUser = '';
         this.userName = '';
     }
     LoginService.prototype.isLoggedIn = function () {
-        return this.loggedUser != '' || this.token != '';
+        return this.identityService.getToken() != '';
     };
-    LoginService.prototype.rememberUser = function (user) {
-        this.loggedUser = user;
-    };
-    LoginService.prototype.loginSuccess = function (token, userName) {
-        this.token = token;
+    LoginService.prototype.loginSuccess = function (token, userName, rememberUser) {
+        this.identityService.setToken(token, rememberUser);
         this.userName = userName;
+        this.router.navigate(['/libre-deuda']);
     };
     LoginService.prototype.login = function (user) {
         var loginUrl = this.apiEndpoint + '/login';
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.post(loginUrl, user, options)
-            .map(this.extractData)
-            .catch(this.handleError);
-    };
-    LoginService.prototype.extractData = function (res) {
-        var body = res.json();
-        return body.data || {};
-    };
-    LoginService.prototype.handleError = function (error) {
-        // In a real world app, we might use a remote logging infrastructure
-        // We'd also dig deeper into the error to get a better message
-        console.log(error);
-        var errMsg = (error.message) ? error.message :
-            error.status ? error.status + " - " + error.statusText : 'Server error';
-        console.error(errMsg); // log to console instead
-        return Observable_1.Observable.throw(errMsg);
+        return this.http.post(loginUrl, user, false)
+            .map(this.http.extractData)
+            .catch(this.http.handleError);
     };
     LoginService.prototype.logout = function () {
-        this.token = '';
-        this.loggedUser = '';
+        this.identityService.removeToken();
         this.userName = '';
     };
-    __decorate([
-        WebStorage_1.LocalStorage(), 
-        __metadata('design:type', String)
-    ], LoginService.prototype, "loggedUser", void 0);
     __decorate([
         WebStorage_1.LocalStorage(), 
         __metadata('design:type', String)
     ], LoginService.prototype, "userName", void 0);
     LoginService = __decorate([
         core_1.Injectable(),
-        __param(1, core_1.Inject('ApiEndpoint')), 
-        __metadata('design:paramtypes', [http_1.Http, String])
+        __param(3, core_1.Inject('ApiEndpoint')), 
+        __metadata('design:paramtypes', [router_1.Router, extHttp_1.ExtHttp, identity_service_1.IdentityService, String])
     ], LoginService);
     return LoginService;
 }());

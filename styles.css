@@ -1,3 +1,30 @@
 html, body {
 	height: 100%;
 }
+
+.parent-row {
+	background-color: #f9f9f9;
+	/*cursor: hand;*/
+	cursor: pointer;
+}
+
+.parent-row:hover{
+	background-color: #000000;
+	color: white;
+}
+
+.child-row:hover {
+	background-color: #dddddd;
+}
+
+.status-free {
+	color: green;
+}
+
+.status-retired {
+	color: blue;
+}
+
+.status-canceled {
+	color: red;
+}
